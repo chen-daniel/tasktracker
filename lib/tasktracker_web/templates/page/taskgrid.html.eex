@@ -2,23 +2,32 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Time</th>
+      <th>Time Spent HH:MM</th>
       <th>Completed</th>
-
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for task <- @tasks do %>
+  <%= if !task.completed do %>
     <tr>
       <td><%= link task.title, to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></td>
-      <td><%= task.time %></td>
-      <td><%= task.completed %></td>
-
+      <td><%= elem(String.split_at(Time.to_string(Time.truncate(Time.add(~T[00:00:00], NaiveDateTime.diff(elem(NaiveDateTime.from_erl(:erlang.localtime), 1), task.time)), :second)), -3), 0) %></td>
+      <td>&#10007;</td>
       <td class="text-right">
         <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       </td>
     </tr>
+  <%= else %>
+    <tr>
+      <td><del><%= link task.title, to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></del></td>
+      <td>00:00</td>
+      <td>&#10003;</td>
+      <td class="text-right">
+        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+  <% end %>
 <% end %>
   </tbody>
 </table>
