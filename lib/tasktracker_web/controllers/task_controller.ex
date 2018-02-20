@@ -11,12 +11,12 @@ defmodule TasktrackerWeb.TaskController do
 
   def new(conn, _params) do
     changeset = Tasks.change_task(%Task{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", task: false, changeset: changeset)
   end
 
   def create(conn, %{"task" => task_params}) do
     case Tasks.create_task(task_params) do
-      {:ok} ->
+      {:ok, task} ->
         conn
         |> put_flash(:info, "Task created successfully.")
         |> redirect(to: page_path(conn, :dashboard))
@@ -43,7 +43,7 @@ defmodule TasktrackerWeb.TaskController do
       {:ok, task} ->
         conn
         |> put_flash(:info, "Task updated successfully.")
-        |> redirect(to: task_path(conn, :show, task))
+        |> redirect(to: page_path(conn, :dashboard))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", task: task, changeset: changeset)
     end
@@ -55,6 +55,6 @@ defmodule TasktrackerWeb.TaskController do
 
     conn
     |> put_flash(:info, "Task deleted successfully.")
-    |> redirect(to: task_path(conn, :index))
+    |> redirect(to: page_path(conn, :dashboard))
   end
 end

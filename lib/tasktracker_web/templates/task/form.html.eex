@@ -29,11 +29,17 @@
     <%= error_tag f, :description %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :time, class: "control-label" %>
-    <%= datetime_select f, :time, class: "form-control" %>
-    <%= error_tag f, :time %>
-  </div>
+  <%= if @task do %>
+    <div class="form-group">
+      <%= label f, :Starting_time, class: "control-label" %>
+      <%= datetime_select f, :time, class: "form-control"%>
+      <%= error_tag f, :time %>
+    </div>
+  <%= else %>
+      <%= label f, :Starting_time, class: "control-label" %>
+      <%= datetime_select f, :time, class: "form-control", value: Ecto.DateTime.from_erl(:erlang.localtime)%>
+      <%= error_tag f, :time %>
+  <%= end %>
 
   <div class="form-group">
     <%= label f, :completed, class: "control-label" %>
