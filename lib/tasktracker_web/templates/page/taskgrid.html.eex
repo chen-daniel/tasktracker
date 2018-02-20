@@ -1,0 +1,26 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Created by</th>
+      <th>Time</th>
+      <th>Completed</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for task <- @tasks do %>
+    <tr>
+      <td><%= link task.title, to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></td>
+      <td><%= task.created_by %></td>
+      <td><%= task.time %></td>
+      <td><%= task.completed %></td>
+
+      <td class="text-right">
+        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

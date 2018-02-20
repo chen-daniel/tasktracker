@@ -1,22 +1,17 @@
-<%= if @current_user do %>
-  <div class="row">
-    <div class="col">
-      <span><%= link "New Task", to: task_path(@conn, :new) %></span>
-    </div>
-  </div>
-<% end %>
-
 <h1>Your Tasks</h1>
+<span><%= link "New Task", to: task_path(@conn, :new) %></span>
+<%= render "taskgrid.html", Map.put(assigns, :action, user_path(@conn, :create)) %>
 
-<%= Enum.map @tasks, fn task -> %>
+<!-- Copied from Nat Tuck's notes -->
 <div class="row">
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h6 class="card-title"><%= task.created_by %></h6>
-        <p><%= task.title %></p>
-      </div>
-    </div>
+  <div class="col-3 offset-9">
+    <%= if @current_user do %>
+      <p>
+        Logged in as: <%= @current_user.name %> |
+        <%= link "Log Out", to: "/session", method: :delete %>
+      </p>
+    <% else %>
+      <p>Not logged in.</p>
+    <% end %>
   </div>
 </div>
-<% end %>
