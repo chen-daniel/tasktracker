@@ -1,3 +1,8 @@
+# Design
+
+The user starts at the index page, where they can either register an account, or login.
+Upon logging in, the user is greeted with their dashboard which lists all their current tasks (showing who it was created by, the title of the task, time spent on it, and whether or not it is completed). They can select tasks to edit, or create new tasks. The user can then logout.
+
 # Tasktracker
 
 To start your Phoenix server:
