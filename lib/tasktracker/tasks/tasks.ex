@@ -28,6 +28,13 @@ defmodule Tasktracker.Tasks do
     Repo.all(query)
   end
 
+  def list_underling_tasks(conn, underling) do
+    current_id = Plug.Conn.get_session(conn, :user_id)
+    underling_id = underling.underling_id
+    query = from t in Task, where: t.assigned_to_id == ^underling_id and t.created_by_id == ^current_id, select: t
+    %{underling: underling, tasks: Repo.all(query)}
+  end
+
   @doc """
   Gets a single task.
 

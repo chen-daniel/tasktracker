@@ -26,6 +26,7 @@ defmodule TasktrackerWeb.Router do
     get "/", PageController, :index
     resources "/users", UserController
     resources "/tasks", TaskController
+    resources "/managements", ManagementController
 
     get "/dashboard", PageController, :dashboard
 

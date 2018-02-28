@@ -1,6 +1,7 @@
 defmodule TasktrackerWeb.TaskController do
   use TasktrackerWeb, :controller
 
+  alias Tasktracker.Accounts
   alias Tasktracker.Tasks
   alias Tasktracker.Tasks.Task
 
@@ -11,7 +12,8 @@ defmodule TasktrackerWeb.TaskController do
 
   def new(conn, _params) do
     changeset = Tasks.change_task(%Task{})
-    render(conn, "new.html", task: false, changeset: changeset)
+    assignable_users = Accounts.list_assignable_users(conn)
+    render(conn, "new.html", task: false, changeset: changeset, assignable_users: assignable_users)
   end
 
   def create(conn, %{"task" => task_params}) do
@@ -21,7 +23,7 @@ defmodule TasktrackerWeb.TaskController do
         |> put_flash(:info, "Task created successfully.")
         |> redirect(to: page_path(conn, :dashboard))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", task: false, changeset: changeset)
     end
   end
 
@@ -32,8 +34,9 @@ defmodule TasktrackerWeb.TaskController do
 
   def edit(conn, %{"id" => id}) do
     task = Tasks.get_task!(id)
+    assignable_users = Accounts.list_assignable_users(conn)
     changeset = Tasks.change_task(task)
-    render(conn, "edit.html", task: task, changeset: changeset)
+    render(conn, "edit.html", task: task, assignable_users: assignable_users, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do

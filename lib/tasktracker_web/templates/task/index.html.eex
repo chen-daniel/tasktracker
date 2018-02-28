@@ -16,7 +16,7 @@
   <tbody>
 <%= for task <- @tasks do %>
     <tr>
-      <td><%= task.created_by %></td>
+      <td><%= task.created_by_id %></td>
       <td><%= task.assigned_to_id %></td>
       <td><%= task.title %></td>
       <td><%= task.description %></td>

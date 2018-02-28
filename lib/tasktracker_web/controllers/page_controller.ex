@@ -13,7 +13,9 @@ defmodule TasktrackerWeb.PageController do
       redirect(conn, to: page_path(conn, :index))
     end
     tasks = Tasktracker.Tasks.list_user_tasks(conn)
+    underlings = Tasktracker.Accounts.list_user_underlings(conn)
+    underlings = Enum.map(underlings, fn(x) -> Tasktracker.Tasks.list_underling_tasks(conn, x) end)
     changeset = Tasktracker.Tasks.change_task(%Tasktracker.Tasks.Task{})
-    render conn, "dashboard.html", tasks: tasks, changeset: changeset
+    render conn, "dashboard.html", tasks: tasks, underlings: underlings, changeset: changeset
   end
 end
